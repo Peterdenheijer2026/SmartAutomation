@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SmartAutomation (Vercel test)</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background: #0b1220;
+        color: #e8eefc;
+      }
+      .wrap {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 48px 20px;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        padding: 28px;
+      }
+      h1 {
+        margin: 0 0 10px;
+        font-size: 28px;
+        letter-spacing: -0.02em;
+      }
+      p {
+        margin: 0 0 18px;
+        line-height: 1.5;
+      }
+      code {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 2px 6px;
+        border-radius: 8px;
+      }
+      .meta {
+        display: grid;
+        gap: 8px;
+        margin-top: 16px;
+        font-size: 14px;
+        color: rgba(232, 238, 252, 0.85);
+      }
+      a {
+        color: #8ab4ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <h1>SmartAutomation deployed</h1>
+        <p>Deze pagina is bedoeld als test om te checken of je GitHub → Vercel deployment werkt.</p>
+        <p>
+          Als je deze content ziet na het pushen, dan is de koppeling tussen <code>GitHub</code> en <code>Vercel</code> klaar.
+        </p>
+        <div class="meta" id="meta"></div>
+        <p style="margin-top: 22px">
+          Volgende stap: je kunt hier Supabase integreren zodra je wil testen dat de API calls ook werken.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      const now = new Date();
+      const meta = document.getElementById("meta");
+      meta.innerHTML = `
+        <div><strong>URL:</strong> ${window.location.href}</div>
+        <div><strong>Tijd (lokale browser):</strong> ${now.toLocaleString()}</div>
+        <div><strong>User-Agent:</strong> ${navigator.userAgent}</div>
+      `;
+    </script>
+  </body>
+</html>
+
