@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NRGYM – Env debug</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background: #0b1220;
+        color: #e8eefc;
+      }
+      .wrap {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+      .card {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 16px;
+        padding: 22px;
+      }
+      h1 { margin: 0 0 12px; font-size: 22px; }
+      .row { display: flex; gap: 12px; flex-wrap: wrap; }
+      .kv {
+        flex: 1 1 320px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 14px;
+        overflow-wrap: anywhere;
+      }
+      .k { color: rgba(232,238,252,0.75); font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+      .v { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 14px; }
+      .status { margin-top: 14px; color: rgba(232,238,252,0.85); }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <h1>Env debug (Vercel)</h1>
+        <div class="status" id="status">Laden...</div>
+        <div class="row" style="margin-top: 16px;">
+          <div class="kv"><div class="k">SUPABASE_URL</div><div class="v" id="supabaseUrl">-</div></div>
+          <div class="kv"><div class="k">SUPABASE_ANON_KEY (gemaskeerd)</div><div class="v" id="supabaseAnonKey">-</div></div>
+        </div>
+        <div style="margin-top: 14px;" class="mono" id="rawError"></div>
+      </div>
+    </div>
+    <script>
+      function maskKey(k) {
+        const s = String(k || "");
+        if (!s) return "";
+        if (s.length <= 20) return s;
+        return s.slice(0, 12) + "..." + s.slice(-8);
+      }
+
+      async function run() {
+        const statusEl = document.getElementById("status");
+        const urlEl = document.getElementById("supabaseUrl");
+        const anonEl = document.getElementById("supabaseAnonKey");
+        const rawErrorEl = document.getElementById("rawError");
+
+        try {
+          const res = await fetch("/api/supabase-config", { method: "GET" });
+          if (!res.ok) {
+            const text = await res.text().catch(() => "");
+            rawErrorEl.textContent = text;
+            statusEl.textContent = "Geen env vars gevonden of endpoint faalt.";
+            urlEl.textContent = "-";
+            anonEl.textContent = "-";
+            return;
+          }
+          const data = await res.json();
+          statusEl.textContent = "Endpoint ok: env vars aanwezig.";
+          urlEl.textContent = data.url || "(leeg)";
+          anonEl.textContent = maskKey(data.anonKey);
+        } catch (e) {
+          statusEl.textContent = "Kon /api/supabase-config niet ophalen.";
+          rawErrorEl.textContent = String(e);
+        }
+      }
+      run();
+    </script>
+  </body>
+</html>
+
