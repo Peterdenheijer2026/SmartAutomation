@@ -1,6 +1,15 @@
 # SmartAutomation
 Automation
 
+## Gym site
+De repo bevat een simpele gym-site als `index.html` (root).  
+Die gebruikt een vaste navbar met smooth scrolling naar de secties.
+
+## Supabase PT-systeem (basis)
+- `schema.sql`: SQL schema + functies + RLS policies voor leden, PT sessies en attendance via code.
+- `app-owner.html`: owner dashboard (inloglink, leden aanmaken, sessies boeken, facturen genereren).
+- `app-member.html`: lidpagina (toegangscode invullen, “Geweest” afvinken).
+
 ## Push + Vercel deploy
 
 **`push.bat`** doet: `git add` → `git commit` → `git push origin main`.

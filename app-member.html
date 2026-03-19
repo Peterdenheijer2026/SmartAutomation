@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NRGYM – Lid</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #0d0d0d;
+        --surface: #1a1a1a;
+        --text: #f0f0f0;
+        --muted: #888;
+        --accent: #00ff88;
+        --accent-dim: #00cc6a;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "DM Sans", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+      .container { max-width: 900px; margin: 0 auto; padding: 28px 18px; }
+      .brand {
+        font-family: "Bebas Neue", sans-serif;
+        color: var(--accent);
+        letter-spacing: 0.06em;
+        font-size: 2rem;
+        margin-bottom: 6px;
+      }
+      .pill { color: var(--muted); font-size: 0.95rem; margin-bottom: 18px; }
+      .card {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 14px;
+        padding: 18px;
+        margin-bottom: 18px;
+      }
+      h2 {
+        font-family: "Bebas Neue", sans-serif;
+        letter-spacing: 0.06em;
+        margin: 0 0 12px;
+        font-size: 1.7rem;
+      }
+      label { display:block; font-weight: 700; font-size: 0.9rem; margin: 0 0 6px; }
+      input, button {
+        width: 100%;
+        padding: 12px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.10);
+        background: rgba(255,255,255,0.04);
+        color: var(--text);
+        outline: none;
+      }
+      input::placeholder { color: rgba(240,240,240,0.4); }
+      button {
+        background: var(--accent);
+        border: 0;
+        color: var(--bg);
+        font-weight: 800;
+        cursor: pointer;
+        transition: transform .1s, background .2s;
+      }
+      button:hover { background: var(--accent-dim); transform: translateY(-1px); }
+      .row { display: grid; grid-template-columns: 1fr; gap: 12px; }
+      @media (min-width: 700px) { .row { grid-template-columns: 1fr 1fr; } }
+      .error {
+        background: rgba(255, 70, 70, 0.12);
+        border: 1px solid rgba(255, 70, 70, 0.35);
+        color: #ffb3b3;
+        padding: 10px 12px;
+        border-radius: 12px;
+        display: none;
+        margin-bottom: 12px;
+      }
+      .ok {
+        background: rgba(0, 255, 136, 0.10);
+        border: 1px solid rgba(0, 255, 136, 0.30);
+        color: #b7ffd9;
+        padding: 10px 12px;
+        border-radius: 12px;
+        display: none;
+        margin-bottom: 12px;
+      }
+      .list { display: grid; gap: 10px; }
+      .item {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 12px 12px;
+      }
+      .item .top {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .muted { color: var(--muted); }
+      .checkboxRow {
+        display:flex;
+        align-items:center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 10px;
+      }
+      input[type="checkbox"] { width: auto; }
+      @media print { button { display:none; } }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="brand">NRGYM</div>
+      <div class="pill">PT sessies afvinken (op mobiel)</div>
+
+      <div class="card">
+        <h2>Lid toegangscode</h2>
+        <div id="msgError" class="error"></div>
+        <div id="msgOk" class="ok"></div>
+
+        <form id="codeForm">
+          <label for="accessCode">Toegangscode</label>
+          <input id="accessCode" type="text" inputmode="text" placeholder="Plak of typ de code die de eigenaar je gaf" required />
+          <div class="row" style="margin-top: 12px;">
+            <button type="submit">Toon mijn sessies</button>
+            <button type="button" id="clearBtn" style="background: transparent; color: var(--accent); border: 2px solid var(--accent);">
+              Code wissen
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div id="sessionsCard" class="card" style="display:none;">
+        <h2>Mijn sessies</h2>
+        <div class="muted" style="margin-bottom: 10px;">
+          Tik “Geweest” aan zodra je de PT sessie hebt gedaan.
+        </div>
+        <div class="list" id="sessionsList"></div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="/supabase-client.js"></script>
+    <script>
+      const $ = (id) => document.getElementById(id);
+
+      const state = {
+        supa: null,
+        accessCode: "",
+      };
+
+      function showError(msg) {
+        const el = $("msgError");
+        el.textContent = msg;
+        el.style.display = "block";
+      }
+
+      function showOk(msg) {
+        const el = $("msgOk");
+        el.textContent = msg;
+        el.style.display = "block";
+      }
+
+      function hideMsgs() {
+        $("msgError").style.display = "none";
+        $("msgOk").style.display = "none";
+      }
+
+      function formatDT(s) {
+        return new Date(s).toLocaleString("nl-NL", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+
+      async function loadSessions() {
+        hideMsgs();
+        $("sessionsList").innerHTML = "";
+
+        const { data, error } = await state.supa.rpc("get_member_sessions", {
+          p_access_token: state.accessCode,
+        });
+        if (error) throw error;
+
+        const sessions = data || [];
+        if (sessions.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "muted";
+          empty.textContent = "Geen sessies gevonden (of je code is nog niet actief).";
+          $("sessionsList").appendChild(empty);
+          return;
+        }
+
+        for (const s of sessions) {
+          const item = document.createElement("div");
+          item.className = "item";
+
+          const memberName = s.member_name || "Lid";
+          const attendedText = s.attended ? "Geweest" : "Nog niet afgevinkt";
+
+          item.innerHTML = \`
+            <div class="top">
+              <div><strong>\${memberName}</strong></div>
+              <div class="muted">\${formatDT(s.scheduled_at)}</div>
+            </div>
+            <div class="checkboxRow">
+              <div class="muted">\${attendedText}</div>
+              <label style="display:flex; align-items:center; gap:10px;">
+                <input type="checkbox" data-session-id="\${s.session_id}" \${s.attended ? "checked" : ""} />
+                <span style="font-weight:700;">Geweest</span>
+              </label>
+            </div>
+          \`;
+
+          $("sessionsList").appendChild(item);
+        }
+
+        // Bind events op checkboxes
+        const boxes = document.querySelectorAll('input[type="checkbox"][data-session-id]');
+        for (const box of boxes) {
+          box.addEventListener("change", async (e) => {
+            const sessionId = e.currentTarget.getAttribute("data-session-id");
+            const attended = e.currentTarget.checked;
+
+            try {
+              hideMsgs();
+              await state.supa.rpc("set_session_attended", {
+                p_session_id: sessionId,
+                p_access_token: state.accessCode,
+                p_attended: attended,
+              });
+              await loadSessions();
+              showOk(attended ? "Afgevinkt: geweest." : "Afgevinkt: niet geweest.");
+            } catch (err) {
+              showError(err.message || String(err));
+              e.currentTarget.checked = !attended;
+            }
+          });
+        }
+      }
+
+      async function init() {
+        state.supa = await initSupabase();
+
+        const saved = localStorage.getItem("nrgym_access_code") || "";
+        if (saved) {
+          state.accessCode = saved.trim();
+          $("codeForm").style.display = "none";
+          $("sessionsCard").style.display = "block";
+          await loadSessions().catch((e) => {
+            showError("Code werkt niet meer. Voer een nieuwe code in.");
+          });
+        }
+      }
+
+      $("codeForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const code = $("accessCode").value.trim();
+        state.accessCode = code;
+        localStorage.setItem("nrgym_access_code", code);
+
+        $("sessionsCard").style.display = "block";
+        await loadSessions().catch((err) => {
+          showError(err.message || String(err));
+        });
+      });
+
+      $("clearBtn").addEventListener("click", () => {
+        localStorage.removeItem("nrgym_access_code");
+        state.accessCode = "";
+        $("accessCode").value = "";
+        $("sessionsCard").style.display = "none";
+        $("codeForm").style.display = "block";
+        $("sessionsList").innerHTML = "";
+        hideMsgs();
+      });
+
+      window.addEventListener("DOMContentLoaded", () => {
+        init().catch((e) => showError(e.message || String(e)));
+      });
+    </script>
+  </body>
+</html>
+

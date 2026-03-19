@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>NR Gym – Fitness & kracht</title>
+    <title>NRGYM – Fitness & kracht</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet" />
@@ -16,6 +16,7 @@
         --accent: #00ff88;
         --accent-dim: #00cc6a;
       }
+      html { scroll-behavior: smooth; }
       * { box-sizing: border-box; }
       body {
         margin: 0;
@@ -110,6 +111,7 @@
       section {
         padding: 80px 0;
         border-top: 1px solid rgba(255,255,255,0.06);
+        scroll-margin-top: 92px; /* zodat anchors onder de vaste nav starten */
       }
       section h2 {
         font-family: "Bebas Neue", sans-serif;
@@ -195,7 +197,7 @@
   <body>
     <nav>
       <div class="container">
-        <a href="#" class="logo">NR GYM</a>
+        <a href="#" class="logo">NRGYM</a>
         <ul class="nav-links">
           <li><a href="#classes">Lessen</a></li>
           <li><a href="#openingstijden">Openingstijden</a></li>
@@ -206,10 +208,14 @@
 
     <header class="hero">
       <div class="container">
-        <h1>Word <span>sterker.</span><br />Train bij NR Gym.</h1>
+        <h1>Word <span>sterker.</span><br />Train bij NRGYM.</h1>
         <p>Moderne gym met kracht, cardio en groepslessen. Voor iedereen die wil bouwen aan conditie en spierkracht.</p>
         <a href="#contact" class="btn">Gratis proefles</a>
         <a href="#openingstijden" class="btn btn-outline">Openingstijden</a>
+        <div style="margin-top: 18px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <a href="app-owner.html" class="btn" style="margin-left: 0;">Eigenaar</a>
+          <a href="app-member.html" class="btn btn-outline" style="margin-left: 0;">Lid (code)</a>
+        </div>
       </div>
     </header>
 
@@ -265,7 +271,7 @@
 
     <footer>
       <div class="container">
-        © NR Gym · Alle rechten voorbehouden
+        © NRGYM · Alle rechten voorbehouden
       </div>
     </footer>
   </body>

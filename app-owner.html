@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NRGYM – Eigenaar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #0d0d0d;
+        --surface: #1a1a1a;
+        --text: #f0f0f0;
+        --muted: #888;
+        --accent: #00ff88;
+        --accent-dim: #00cc6a;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "DM Sans", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+      .container { max-width: 1050px; margin: 0 auto; padding: 28px 18px; }
+      .head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .brand {
+        font-family: "Bebas Neue", sans-serif;
+        color: var(--accent);
+        letter-spacing: 0.06em;
+        font-size: 2rem;
+      }
+      .pill {
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+      @media (max-width: 900px) {
+        .grid { grid-template-columns: 1fr; }
+      }
+      .card {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 14px;
+        padding: 18px;
+      }
+      h2 {
+        font-family: "Bebas Neue", sans-serif;
+        letter-spacing: 0.06em;
+        margin: 0 0 14px;
+        font-size: 1.8rem;
+      }
+      .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+      label { display: block; font-weight: 600; font-size: 0.9rem; margin: 0 0 6px; }
+      input, select, button {
+        width: 100%;
+        padding: 12px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.10);
+        background: rgba(255,255,255,0.04);
+        color: var(--text);
+        outline: none;
+      }
+      input::placeholder { color: rgba(240,240,240,0.4); }
+      button {
+        background: var(--accent);
+        border: 0;
+        color: var(--bg);
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform .1s, background .2s;
+      }
+      button:hover { background: var(--accent-dim); transform: translateY(-1px); }
+      .btn-outline {
+        background: transparent;
+        border: 2px solid var(--accent);
+        color: var(--accent);
+      }
+      .btn-outline:hover { background: rgba(0,255,136,0.1); }
+      .muted { color: var(--muted); }
+      .error {
+        background: rgba(255, 70, 70, 0.12);
+        border: 1px solid rgba(255, 70, 70, 0.35);
+        color: #ffb3b3;
+        padding: 10px 12px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        display: none;
+      }
+      .ok {
+        background: rgba(0, 255, 136, 0.10);
+        border: 1px solid rgba(0, 255, 136, 0.30);
+        color: #b7ffd9;
+        padding: 10px 12px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        display: none;
+      }
+      .list {
+        display: grid;
+        gap: 10px;
+      }
+      .item {
+        padding: 12px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.03);
+      }
+      .item strong { color: var(--accent); }
+      .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+      .small-link { color: var(--accent); text-decoration: none; font-weight: 700; }
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .table th, .table td {
+        text-align: left;
+        padding: 10px 6px;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+      .table th { color: var(--muted); font-weight: 700; font-size: 0.9rem; }
+      .codeBox {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .code {
+        padding: 10px 12px;
+        background: rgba(255,255,255,0.04);
+        border: 1px dashed rgba(255,255,255,0.18);
+        border-radius: 10px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+        letter-spacing: 0.02em;
+        word-break: break-word;
+      }
+      @media print {
+        button { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="head">
+        <div>
+          <div class="brand">NRGYM</div>
+          <div class="pill">Owner dashboard (leden + PT sessies)</div>
+        </div>
+        <div>
+          <a class="small-link" href="app-member.html">Naar lidpagina</a>
+        </div>
+      </div>
+
+      <div id="loginSection" class="card">
+        <h2>Inloggen (eigenaar)</h2>
+        <div id="loginError" class="error"></div>
+        <div id="loginOk" class="ok"></div>
+        <form id="loginForm" autocomplete="on">
+          <label for="ownerEmail">E-mail</label>
+          <input id="ownerEmail" name="ownerEmail" type="email" placeholder="jij@domein.nl" required />
+          <div class="actions" style="margin-top: 12px;">
+            <button type="submit">Stuur inloglink</button>
+          </div>
+          <p class="muted" style="margin: 10px 0 0;">
+            Na inloggen kun je leden aanmaken, PT sessies boeken en facturen genereren.
+          </p>
+        </form>
+      </div>
+
+      <div id="appSection" style="display:none;">
+        <div class="grid">
+          <div class="card">
+            <h2>Leden</h2>
+            <div id="membersError" class="error"></div>
+            <div id="membersOk" class="ok"></div>
+
+            <form id="inviteForm">
+              <div class="row">
+                <div>
+                  <label for="memberName">Naam</label>
+                  <input id="memberName" type="text" placeholder="Voornaam Achternaam" required />
+                </div>
+                <div>
+                  <label for="memberPrice">Prijs per PT</label>
+                  <input id="memberPrice" type="number" min="0" step="0.01" placeholder="bijv. 30.00" required />
+                </div>
+              </div>
+              <div class="actions">
+                <button type="submit">Maak lid + code</button>
+                <button type="button" id="refreshMembers" class="btn-outline">Ververs</button>
+              </div>
+            </form>
+
+            <div style="margin-top: 14px;">
+              <div class="muted" style="margin-bottom: 8px; font-weight: 700;">Toegegeven code (deel met het lid):</div>
+              <div id="latestMemberCode" class="codeBox" style="display:none;">
+                <div id="memberCodeText" class="code"></div>
+                <button type="button" id="copyCodeBtn" class="btn-outline" style="width:auto;">Kopieer</button>
+              </div>
+            </div>
+
+            <div style="margin-top: 16px;">
+              <div class="muted" style="margin-bottom: 8px; font-weight: 700;">Ledenlijst</div>
+              <div id="membersList" class="list"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>PT sessies</h2>
+            <div id="sessionsError" class="error"></div>
+            <div id="sessionsOk" class="ok"></div>
+
+            <form id="sessionForm">
+              <label for="memberSelect">Lid</label>
+              <select id="memberSelect" required></select>
+
+              <div style="height: 12px;"></div>
+
+              <label for="sessionDatetime">Datum & tijd</label>
+              <input id="sessionDatetime" type="datetime-local" required />
+
+              <div class="actions">
+                <button type="submit">Boek PT-sessie</button>
+                <button type="button" id="refreshSessions" class="btn-outline">Ververs</button>
+              </div>
+            </form>
+
+            <div style="margin-top: 16px;">
+              <div class="muted" style="margin-bottom: 8px; font-weight: 700;">Laatste sessies</div>
+              <div id="sessionsList" class="list"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 18px;">
+          <h2>Facturen (preview)</h2>
+          <p class="muted" style="margin-top: -8px; margin-bottom: 12px;">
+            Kies een maand (YYYY-MM) en genereer de factuurregels op basis van “afgevinkt” sessies.
+          </p>
+          <div class="row">
+            <div>
+              <label for="invoiceMonth">Maand</label>
+              <input id="invoiceMonth" type="month" required />
+            </div>
+            <div style="display:flex; align-items:flex-end;">
+              <button type="button" id="genInvoicesBtn">Genereer facturen</button>
+            </div>
+          </div>
+
+          <div id="invoiceMsg" class="ok" style="margin-top: 12px;"></div>
+
+          <div style="margin-top: 18px; overflow:auto;">
+            <table class="table" aria-label="Factuur overzicht">
+              <thead>
+                <tr>
+                  <th>Lid</th>
+                  <th>Sessies</th>
+                  <th>Prijs</th>
+                  <th>Totaal</th>
+                </tr>
+              </thead>
+              <tbody id="invoiceRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="/supabase-client.js"></script>
+    <script>
+      const $ = (id) => document.getElementById(id);
+
+      const state = {
+        supa: null,
+        sessionUserId: null,
+        members: [],
+      };
+
+      function showError(el, msg) {
+        el.textContent = msg;
+        el.style.display = "block";
+      }
+      function showOk(el, msg) {
+        el.textContent = msg;
+        el.style.display = "block";
+      }
+      function hideMsg(el) {
+        el.style.display = "none";
+        el.textContent = "";
+      }
+
+      async function refreshMembers() {
+        const { data, error } = await state.supa
+          .from("members")
+          .select("id, full_name, price_cents")
+          .order("created_at", { ascending: false });
+        if (error) throw error;
+
+        state.members = data || [];
+        renderMembers();
+      }
+
+      function renderMembers() {
+        const list = $("membersList");
+        list.innerHTML = "";
+
+        const select = $("memberSelect");
+        select.innerHTML = "";
+
+        for (const m of state.members) {
+          const div = document.createElement("div");
+          div.className = "item";
+          div.innerHTML = \`
+            <div><strong>\${m.full_name}</strong></div>
+            <div class="muted">Prijs: \${formatMoneyEURFromCents(m.price_cents)}</div>
+          \`;
+          list.appendChild(div);
+
+          const opt = document.createElement("option");
+          opt.value = m.id;
+          opt.textContent = m.full_name;
+          select.appendChild(opt);
+        }
+      }
+
+      async function refreshSessions() {
+        const { data, error } = await state.supa
+          .from("pt_sessions")
+          .select("id, scheduled_at, attended, attended_at, member_id, created_at")
+          .order("scheduled_at", { ascending: false })
+          .limit(100);
+        if (error) throw error;
+
+        const list = $("sessionsList");
+        list.innerHTML = "";
+
+        const memberNameById = Object.fromEntries(
+          state.members.map((m) => [m.id, m.full_name])
+        );
+
+        for (const s of data || []) {
+          const dt = new Date(s.scheduled_at).toLocaleString("nl-NL", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+          const item = document.createElement("div");
+          item.className = "item";
+          item.innerHTML = \`
+            <div><strong>\${memberNameById[s.member_id] || "Onbekend lid"}</strong></div>
+            <div class="muted">\${dt}</div>
+            <div>\${s.attended ? "Afgevinkt (geweest)" : "Nog niet afgevinkt"}</div>
+          \`;
+          list.appendChild(item);
+        }
+      }
+
+      async function loadOwnerArea() {
+        state.sessionUserId = state.session.user.id;
+        hideMsg($("loginError"));
+        hideMsg($("loginOk"));
+
+        $("loginSection").style.display = "none";
+        $("appSection").style.display = "block";
+
+        await refreshMembers();
+        await refreshSessions();
+        await refreshInvoicePreview();
+      }
+
+      async function refreshInvoicePreview() {
+        // We tonen een preview op basis van invoices tabel (als die al bestaat).
+        // Als er nog geen invoices staan, tonen we alleen een leeg overzicht.
+        const monthInput = $("invoiceMonth");
+        const monthValue = monthInput.value || "";
+        if (!monthValue) return;
+
+        const rowsEl = $("invoiceRows");
+        rowsEl.innerHTML = "";
+
+        const { data, error } = await state.supa
+          .from("invoices")
+          .select("member_id, session_count, total_cents")
+          .eq("owner_id", state.sessionUserId)
+          .eq("month", monthValue)
+          .order("member_id");
+
+        if (error) return;
+
+        const membersMap = Object.fromEntries(
+          state.members.map((m) => [m.id, m.full_name])
+        );
+
+        for (const inv of data || []) {
+          const tr = document.createElement("tr");
+          const total = formatMoneyEURFromCents(inv.total_cents);
+          const price = formatMoneyEURFromCents(
+            (state.members.find((m) => m.id === inv.member_id) || {}).price_cents
+          );
+          tr.innerHTML = \`
+            <td>\${membersMap[inv.member_id] || "Lid"}</td>
+            <td>\${inv.session_count}</td>
+            <td>\${price}</td>
+            <td>\${total}</td>
+          \`;
+          rowsEl.appendChild(tr);
+        }
+      }
+
+      async function init() {
+        state.supa = await initSupabase();
+
+        // Login redirect afhandelen
+        const { data: authData, error: authError } = await state.supa.auth.getSession();
+        if (authError) {
+          showError($("loginError"), authError.message || String(authError));
+          return;
+        }
+
+        state.session = authData?.session || null;
+
+        // Default invoice month: huidige maand
+        const m = new Date();
+        const yyyy = m.getFullYear();
+        const mm = String(m.getMonth() + 1).padStart(2, "0");
+        $("invoiceMonth").value = \`\${yyyy}-\${mm}\`;
+
+        state.session ? await loadOwnerArea() : null;
+
+        state.supa.auth.onAuthStateChange(async (_event, session) => {
+          state.session = session;
+          if (session) await loadOwnerArea();
+          else {
+            $("appSection").style.display = "none";
+            $("loginSection").style.display = "block";
+          }
+        });
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        init().catch((e) => showError($("loginError"), e.message || String(e)));
+      });
+
+      // Login
+      $("loginForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = $("ownerEmail").value.trim();
+        hideMsg($("loginError"));
+        hideMsg($("loginOk"));
+        try {
+          const redirectTo = window.location.origin + window.location.pathname;
+          const { error } = await state.supa.auth.signInWithOtp({
+            email,
+            options: { emailRedirectTo: redirectTo },
+          });
+          if (error) throw error;
+          showOk($("loginOk"), "Inloglink verstuurd. Open de link op je telefoon/PC.");
+        } catch (err) {
+          showError($("loginError"), err.message || String(err));
+        }
+      });
+
+      // Members
+      $("refreshMembers").addEventListener("click", async () => {
+        try {
+          hideMsg($("membersError"));
+          hideMsg($("membersOk"));
+          await refreshMembers();
+          await refreshSessions();
+        } catch (e) {
+          showError($("membersError"), e.message || String(e));
+        }
+      });
+
+      $("inviteForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const full_name = $("memberName").value.trim();
+        const priceEuro = $("memberPrice").value;
+        const price_cents = Math.round(Number(priceEuro) * 100);
+
+        try {
+          hideMsg($("membersError"));
+          hideMsg($("membersOk"));
+          const { data, error } = await state.supa.rpc("create_member", {
+            p_full_name: full_name,
+            p_price_cents: price_cents,
+          });
+          if (error) throw error;
+
+          const row = Array.isArray(data) ? data[0] : data;
+          if (!row || !row.access_code) throw new Error("Geen access code ontvangen.");
+
+          $("latestMemberCode").style.display = "flex";
+          $("memberCodeText").textContent = row.access_code;
+          showOk($("membersOk"), "Lid aangemaakt. Deel de code met het lid.");
+
+          await refreshMembers();
+          await refreshSessions();
+        } catch (err) {
+          showError($("membersError"), err.message || String(err));
+        }
+      });
+
+      $("copyCodeBtn").addEventListener("click", async () => {
+        const code = $("memberCodeText").textContent.trim();
+        try {
+          await navigator.clipboard.writeText(code);
+          showOk($("membersOk"), "Code gekopieerd.");
+        } catch (e) {
+          showError($("membersError"), "Kopiëren lukt niet. Selecteer de code handmatig.");
+        }
+      });
+
+      // Sessions
+      $("refreshSessions").addEventListener("click", async () => {
+        try {
+          hideMsg($("sessionsError"));
+          hideMsg($("sessionsOk"));
+          await refreshSessions();
+        } catch (e) {
+          showError($("sessionsError"), e.message || String(e));
+        }
+      });
+
+      $("sessionForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const member_id = $("memberSelect").value;
+        const dtLocal = $("sessionDatetime").value;
+
+        try {
+          hideMsg($("sessionsError"));
+          hideMsg($("sessionsOk"));
+
+          const scheduled_at = new Date(dtLocal).toISOString();
+          const { data: userData } = await state.supa.auth.getUser();
+          const uid = userData?.user?.id;
+
+          const { error } = await state.supa.from("pt_sessions").insert({
+            owner_id: uid,
+            created_by: uid,
+            member_id,
+            scheduled_at,
+          });
+          if (error) throw error;
+
+          showOk($("sessionsOk"), "PT-sessie geboekt.");
+          $("sessionDatetime").value = "";
+          await refreshSessions();
+        } catch (err) {
+          showError($("sessionsError"), err.message || String(err));
+        }
+      });
+
+      // Invoices generation + preview
+      $("genInvoicesBtn").addEventListener("click", async () => {
+        try {
+          const monthInput = $("invoiceMonth");
+          const month = monthInput.value;
+          hideMsg($("invoiceMsg"));
+          $("invoiceMsg").style.display = "block";
+          $("invoiceMsg").textContent = "Facturen genereren...";
+
+          const { error } = await state.supa.rpc("generate_invoices_for_month", {
+            p_month: month,
+          });
+          if (error) throw error;
+
+          $("invoiceMsg").textContent = "Facturen gegenereerd. Overzicht bijgewerkt.";
+          await refreshInvoicePreview();
+        } catch (e) {
+          $("invoiceMsg").style.display = "block";
+          $("invoiceMsg").textContent = "Fout: " + (e.message || String(e));
+          $("invoiceMsg").style.borderColor = "rgba(255, 70, 70, 0.35)";
+        }
+      });
+    </script>
+  </body>
+</html>
+
