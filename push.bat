@@ -51,6 +51,17 @@ if errorlevel 1 (
   exit /b 1
 )
 
+:: Optioneel: Vercel deploy hook aanroepen voor directe deploy (geen wachten op GitHub webhook)
+if exist "vercel_deploy_hook.txt" (
+  set "HOOKURL="
+  for /f "usebackq delims=" %%i in ("vercel_deploy_hook.txt") do set "HOOKURL=%%i"
+  if defined HOOKURL (
+    echo.
+    echo Vercel deploy starten...
+    powershell -NoProfile -Command "& { $u = Get-Content 'vercel_deploy_hook.txt' -Raw; $u = $u.Trim(); if ($u) { Invoke-WebRequest -Uri $u -Method GET -UseBasicParsing | Out-Null; Write-Host 'Deploy getriggerd.' } }"
+  )
+)
+
 echo.
 echo Klaar. Wijzigingen zijn naar GitHub gepusht.
 pause

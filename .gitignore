@@ -1,3 +1,6 @@
+# Vercel deploy hook URL (niet committen)
+vercel_deploy_hook.txt
+
 # Logs
 logs
 *.log
