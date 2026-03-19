@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SmartAutomation (Vercel test)</title>
+    <title>SmartAutomation (Vercel test v2)</title>
     <style>
       body {
         margin: 0;
@@ -43,34 +43,23 @@
         font-size: 14px;
         color: rgba(232, 238, 252, 0.85);
       }
-      a {
-        color: #8ab4ff;
-      }
     </style>
   </head>
   <body>
     <div class="wrap">
       <div class="card">
         <h1>SmartAutomation deployed (v2)</h1>
-        <p>Deze pagina is bedoeld als test om te checken of je GitHub → Vercel deployment werkt.</p>
-        <p>
-          Als je deze content ziet na het pushen, dan is de koppeling tussen <code>GitHub</code> en <code>Vercel</code> klaar.
-        </p>
+        <p>Testpagina in `public/` om Vercel-statische deploy zeker te laten slagen.</p>
         <div class="meta" id="meta"></div>
-        <p style="margin-top: 22px">
-          Volgende stap: je kunt hier Supabase integreren zodra je wil testen dat de API calls ook werken.
-        </p>
       </div>
     </div>
 
     <script>
       const now = new Date();
-      const meta = document.getElementById("meta");
-      meta.innerHTML = `
+      document.getElementById("meta").innerHTML = `
         <div><strong>URL:</strong> ${window.location.href}</div>
         <div><strong>Tijd (lokale browser):</strong> ${now.toLocaleString()}</div>
         <div><strong>Deploy test versie:</strong> 2</div>
-        <div><strong>User-Agent:</strong> ${navigator.userAgent}</div>
       `;
     </script>
   </body>
