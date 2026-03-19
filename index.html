@@ -3,76 +3,270 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SmartAutomation (Vercel test)</title>
+    <title>NR Gym – Fitness & kracht</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet" />
     <style>
+      :root {
+        --bg: #0d0d0d;
+        --surface: #1a1a1a;
+        --text: #f0f0f0;
+        --muted: #888;
+        --accent: #00ff88;
+        --accent-dim: #00cc6a;
+      }
+      * { box-sizing: border-box; }
       body {
         margin: 0;
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-        background: #0b1220;
-        color: #e8eefc;
+        font-family: "DM Sans", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
       }
-      .wrap {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 48px 20px;
+      .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+      /* Nav */
+      nav {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        background: rgba(13, 13, 13, 0.9);
+        backdrop-filter: blur(8px);
+        z-index: 100;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
       }
-      .card {
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 16px;
-        padding: 28px;
+      nav .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
       }
-      h1 {
-        margin: 0 0 10px;
-        font-size: 28px;
-        letter-spacing: -0.02em;
+      .logo {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.75rem;
+        letter-spacing: 0.05em;
+        color: var(--accent);
       }
-      p {
-        margin: 0 0 18px;
-        line-height: 1.5;
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
       }
-      code {
-        background: rgba(255, 255, 255, 0.08);
-        padding: 2px 6px;
+      .nav-links a {
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+      .nav-links a:hover { color: var(--accent); }
+
+      /* Hero */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 120px 0 80px;
+        background: linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%);
+      }
+      .hero h1 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(3.5rem, 12vw, 6rem);
+        line-height: 0.95;
+        margin: 0 0 24px;
+        letter-spacing: 0.02em;
+      }
+      .hero h1 span { color: var(--accent); }
+      .hero p {
+        font-size: 1.2rem;
+        color: var(--muted);
+        max-width: 480px;
+        margin: 0 0 32px;
+      }
+      .btn {
+        display: inline-block;
+        padding: 14px 28px;
+        background: var(--accent);
+        color: var(--bg);
+        text-decoration: none;
+        font-weight: 600;
         border-radius: 8px;
+        transition: background 0.2s, transform 0.2s;
       }
-      .meta {
+      .btn:hover {
+        background: var(--accent-dim);
+        transform: translateY(-2px);
+      }
+      .btn-outline {
+        background: transparent;
+        color: var(--accent);
+        border: 2px solid var(--accent);
+        margin-left: 12px;
+      }
+      .btn-outline:hover { background: rgba(0, 255, 136, 0.1); }
+
+      /* Sections */
+      section {
+        padding: 80px 0;
+        border-top: 1px solid rgba(255,255,255,0.06);
+      }
+      section h2 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 2.5rem;
+        letter-spacing: 0.05em;
+        margin: 0 0 40px;
+        color: var(--text);
+      }
+
+      /* Classes grid */
+      .classes {
         display: grid;
-        gap: 8px;
-        margin-top: 16px;
-        font-size: 14px;
-        color: rgba(232, 238, 252, 0.85);
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 24px;
       }
-      a {
-        color: #8ab4ff;
+      .class-card {
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 28px;
+        border: 1px solid rgba(255,255,255,0.06);
+        transition: border-color 0.2s, transform 0.2s;
+      }
+      .class-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-4px);
+      }
+      .class-card h3 {
+        margin: 0 0 8px;
+        font-size: 1.25rem;
+        color: var(--accent);
+      }
+      .class-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      /* Openingstijden */
+      .hours {
+        max-width: 400px;
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 28px;
+        border: 1px solid rgba(255,255,255,0.06);
+      }
+      .hours ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .hours li {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+      .hours li:last-child { border-bottom: 0; }
+      .hours .day { font-weight: 600; }
+      .hours .time { color: var(--muted); }
+
+      /* Contact */
+      .contact p {
+        color: var(--muted);
+        margin: 0 0 24px;
+      }
+      .contact a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .contact a:hover { text-decoration: underline; }
+
+      /* Footer */
+      footer {
+        padding: 40px 0;
+        border-top: 1px solid rgba(255,255,255,0.06);
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.9rem;
       }
     </style>
   </head>
   <body>
-    <div class="wrap">
-      <div class="card">
-        <h1>SmartAutomation deployed (v2)</h1>
-        <p>Deze pagina is bedoeld als test om te checken of je GitHub → Vercel deployment werkt.</p>
-        <p>
-          Als je deze content ziet na het pushen, dan is de koppeling tussen <code>GitHub</code> en <code>Vercel</code> klaar.
-        </p>
-        <div class="meta" id="meta"></div>
-        <p style="margin-top: 22px">
-          Volgende stap: je kunt hier Supabase integreren zodra je wil testen dat de API calls ook werken.
-        </p>
+    <nav>
+      <div class="container">
+        <a href="#" class="logo">NR GYM</a>
+        <ul class="nav-links">
+          <li><a href="#classes">Lessen</a></li>
+          <li><a href="#openingstijden">Openingstijden</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
       </div>
-    </div>
+    </nav>
 
-    <script>
-      const now = new Date();
-      const meta = document.getElementById("meta");
-      meta.innerHTML = `
-        <div><strong>URL:</strong> ${window.location.href}</div>
-        <div><strong>Tijd (lokale browser):</strong> ${now.toLocaleString()}</div>
-        <div><strong>Deploy test versie:</strong> 2</div>
-        <div><strong>User-Agent:</strong> ${navigator.userAgent}</div>
-      `;
-    </script>
+    <header class="hero">
+      <div class="container">
+        <h1>Word <span>sterker.</span><br />Train bij NR Gym.</h1>
+        <p>Moderne gym met kracht, cardio en groepslessen. Voor iedereen die wil bouwen aan conditie en spierkracht.</p>
+        <a href="#contact" class="btn">Gratis proefles</a>
+        <a href="#openingstijden" class="btn btn-outline">Openingstijden</a>
+      </div>
+    </header>
+
+    <section id="classes">
+      <div class="container">
+        <h2>Lessen & training</h2>
+        <div class="classes">
+          <div class="class-card">
+            <h3>Krachttraining</h3>
+            <p>Vrije gewichten en machines. Begeleiding voor elk niveau.</p>
+          </div>
+          <div class="class-card">
+            <h3>Cardio</h3>
+            <p>Loopbanden, roeiers en fietsen. Conditie opbouwen.</p>
+          </div>
+          <div class="class-card">
+            <h3>Groepslessen</h3>
+            <p>Bootcamp, HIIT en stretching in groepsverband.</p>
+          </div>
+          <div class="class-card">
+            <h3>Personal training</h3>
+            <p>1-op-1 coaching op maat voor snelle resultaten.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="openingstijden">
+      <div class="container">
+        <h2>Openingstijden</h2>
+        <div class="hours">
+          <ul>
+            <li><span class="day">Ma – Vr</span><span class="time">06:00 – 23:00</span></li>
+            <li><span class="day">Zaterdag</span><span class="time">08:00 – 20:00</span></li>
+            <li><span class="day">Zondag</span><span class="time">09:00 – 18:00</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <h2>Contact</h2>
+        <p>Kom langs voor een rondleiding of vraag een gratis proefles aan.</p>
+        <p>
+          <strong>Adres:</strong> Voorbeeldstraat 123, 1234 AB Plaats<br />
+          <strong>E-mail:</strong> <a href="mailto:info@nrgym.nl">info@nrgym.nl</a><br />
+          <strong>Tel:</strong> <a href="tel:+31123456789">0123 – 456 789</a>
+        </p>
+        <a href="mailto:info@nrgym.nl" class="btn">Stuur een bericht</a>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        © NR Gym · Alle rechten voorbehouden
+      </div>
+    </footer>
   </body>
 </html>
-
